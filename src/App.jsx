@@ -1,6 +1,6 @@
-// Omenucesoir - version responsive améliorée pour ordinateur et mobile
+// Omenucesoir - Carte plein écran + Emoji personnalisé + Responsive complet
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 import axios from "axios";
 
 const styles = {
@@ -71,15 +72,21 @@ const styles = {
   }
 };
 
+const customIcon = L.divIcon({
+  className: "custom-icon",
+  html: "🍽️",
+  iconSize: [24, 24],
+  iconAnchor: [12, 24]
+});
+
 function Home({ restaurants }) {
   return (
-    <div>
-      <h2 style={{ marginBottom: 16 }}>📍 Carte des restaurants</h2>
-      <MapContainer center={[47, 2]} zoom={5} style={{ height: "80vh", width: "100%" }}>
+    <div style={{ height: "calc(100vh - 60px)" }}>
+      <MapContainer center={[47, 2]} zoom={5} style={{ height: "100%", width: "100%" }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {restaurants.map((r, i) =>
           r.coords ? (
-            <Marker key={i} position={[r.coords.lat, r.coords.lon]}>
+            <Marker key={i} position={[r.coords.lat, r.coords.lon]} icon={customIcon}>
               <Popup>
                 <strong>{r.nom}</strong>
                 <br />
